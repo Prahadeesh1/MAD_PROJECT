@@ -1,5 +1,6 @@
 package com.sp.profile;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.postImage.setImageResource(postList.get(position).getImageResId());
+        Post post = postList.get(position);
+        holder.postImage.setImageResource(post.getImageResId());
+
+        // Set click listener to open the full-screen image
+        holder.postImage.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FullScreen.class);
+            intent.putExtra("image_res_id", post.getImageResId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
