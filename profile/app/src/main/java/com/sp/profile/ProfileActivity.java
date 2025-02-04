@@ -1,9 +1,10 @@
 package com.sp.profile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.content.SharedPreferences;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -119,5 +120,13 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerViewEvents.setLayoutManager(new GridLayoutManager(this, 2));
         eventAdapter = new PostAdapter(this, eventList);
         recyclerViewEvents.setAdapter(eventAdapter);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("ProfileData", Context.MODE_PRIVATE);
+        username.setText(sharedPreferences.getString("username", "john_doe"));
+        userBio.setText(sharedPreferences.getString("userBio", "Photographer | Travel | Adventure"));
     }
 }
