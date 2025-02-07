@@ -1,0 +1,4 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#780000" />
+    <pathData android:pathData="M0,0 Q360,150 720,0 L720,180 L0,180 Z" />
+</shape>
