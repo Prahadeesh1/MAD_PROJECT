@@ -8,7 +8,17 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class questionaire extends AppCompatActivity {
 
@@ -45,6 +55,9 @@ public class questionaire extends AppCompatActivity {
     private TextView progressText;
     private int totalQuestions = questions.length; // Update this if you change the number of questions
 
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
     private TextView[] questionTexts = new TextView[4];
     private RadioGroup[] optionGroups = new RadioGroup[4];
     private RadioButton[][] optionButtons = new RadioButton[4][2];
@@ -75,6 +88,9 @@ public class questionaire extends AppCompatActivity {
         optionButtons[3][0] = findViewById(R.id.option4_1);
         optionButtons[3][1] = findViewById(R.id.option4_2);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
         nextButton = findViewById(R.id.nextButton);
 
         progressBar = findViewById(R.id.progressBar);
@@ -93,8 +109,8 @@ public class questionaire extends AppCompatActivity {
             if (currentQuestion < questions.length) {
                 loadQuestions();
             } else {
+                uploadPersonality();
                 Intent intent = new Intent(questionaire.this, welcomepage.class);
-                intent.putExtra("SCORE", score);
                 startActivity(intent);
                 finish();
             }
@@ -119,4 +135,35 @@ public class questionaire extends AppCompatActivity {
         progressText.setText(progress + "% Completed");
 
     }
+
+    private void uploadPersonality() {
+        String personality = determinePersonality(score);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = currentUser.getUid();
+        Map<String, Object> user = new HashMap<>();
+        user.put("personality", personality);
+        db.collection("users").document(userId)
+                .set(user, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(questionaire.this, "Username Saved", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(questionaire.this, "Error saving username", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    public String determinePersonality(int score) {
+        if (score <= 5) return "Introverted, intuitive, spontaneous";
+        else if (score <= 10) return "Balanced personality";
+        else if (score <= 15) return "Extroverted, logical, organized";
+        else return "Strongly extroverted, structured, leader";
+    }
+
+
+
 }

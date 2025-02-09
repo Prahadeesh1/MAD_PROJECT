@@ -1,7 +1,9 @@
 package com.sp.mad_project;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -24,8 +26,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import com.google.common.util.concurrent.ListenableFuture;
+
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -123,33 +125,35 @@ public class Camera extends AppCompatActivity {
         }, ContextCompat.getMainExecutor(this));
     }
 
-    public void takePicture(ImageCapture imageCapture){
+    public void takePicture(ImageCapture imageCapture) {
         final File file = new File(getExternalFilesDir(null), System.currentTimeMillis() + ".jpg");
         ImageCapture.OutputFileOptions outputFileOptions = new ImageCapture.OutputFileOptions.Builder(file).build();
+
         imageCapture.takePicture(outputFileOptions, Executors.newCachedThreadPool(), new ImageCapture.OnImageSavedCallback() {
             @Override
             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Camera.this, "Image saved at: " + file.getPath(), Toast.LENGTH_LONG).show();
-                    }
+                Uri imageUri = Uri.fromFile(file); // Convert file to URI
+
+                runOnUiThread(() -> {
+                    Toast.makeText(Camera.this, "Image saved at: " + imageUri.toString(), Toast.LENGTH_LONG).show();
                 });
-                startCamera(camerafacing);
+
+                // Send the image URI back to submittingImage.java
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("imageUri", imageUri.toString());
+                setResult(RESULT_OK, resultIntent);
+                finish(); // Close Camera activity
             }
 
             @Override
             public void onError(@NonNull ImageCaptureException exception) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(Camera.this, "Failed to save: " + exception.getMessage(), Toast.LENGTH_LONG).show();
-                    }
+                runOnUiThread(() -> {
+                    Toast.makeText(Camera.this, "Failed to save: " + exception.getMessage(), Toast.LENGTH_LONG).show();
                 });
-                startCamera(camerafacing);
             }
         });
     }
+
 
     private void setFlashIcon(androidx.camera.core.Camera camera){
         if(camera.getCameraInfo().hasFlashUnit()){
