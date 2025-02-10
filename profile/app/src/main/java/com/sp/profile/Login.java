@@ -1,4 +1,4 @@
-package com.sp.mad_project;
+package com.sp.profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
-public class loginpage extends AppCompatActivity {
-
+public class Login extends AppCompatActivity {
     private EditText enterEmail;
     private EditText enterPassword;
     private Button login;
@@ -33,7 +31,7 @@ public class loginpage extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            Intent intent = new Intent(getApplicationContext(), mainpage.class);
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
             finish();
         }
@@ -42,15 +40,13 @@ public class loginpage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loginpage);
+        setContentView(R.layout.activity_login);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
         enterEmail = findViewById(R.id.email);
         enterPassword = findViewById(R.id.password);
         register = findViewById(R.id.Register);
-        register.setOnClickListener(onRegister);
         login = findViewById(R.id.login);
         login.setOnClickListener(onlogin);
     }
@@ -63,12 +59,12 @@ public class loginpage extends AppCompatActivity {
             password = enterPassword.getText().toString();
 
             if (TextUtils.isEmpty(email)) {
-                Toast.makeText(loginpage.this, "Enter email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, "Enter email", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             if (TextUtils.isEmpty(password)) {
-                Toast.makeText(loginpage.this, "Enter password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -78,26 +74,18 @@ public class loginpage extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(loginpage.this, "Login Successful",
+                                Toast.makeText(Login.this, "Login Successful",
                                         Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), mainpage.class);
+                                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Toast.makeText(loginpage.this, "Authentication failed.",
+                                Toast.makeText(Login.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-        }
-    };
-
-    private View.OnClickListener onRegister = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(loginpage.this, registerpage.class);
-            startActivity(intent);
         }
     };
 }

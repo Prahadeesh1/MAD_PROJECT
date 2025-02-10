@@ -87,5 +87,16 @@
         android:layout_height="wrap_content"
         android:text="Save Settings"
         android:textColor="@color/white"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="12dp"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:layout_marginTop="12dp"/>
+
+
+
 </LinearLayout>
