@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;import com.sp.mad_project.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Move to MainActivity after 3.5 seconds
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, welcomepage.class));
+            startActivity(new Intent(SplashActivity.this, loginRegistrationPage.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, 3500);

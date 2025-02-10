@@ -23,7 +23,7 @@ public class welcomepage extends AppCompatActivity {
         welcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(welcomepage.this, mainpage.class);
+                Intent intent = new Intent(welcomepage.this, MainActivity.class);
                 startActivity(intent);
             }
         });

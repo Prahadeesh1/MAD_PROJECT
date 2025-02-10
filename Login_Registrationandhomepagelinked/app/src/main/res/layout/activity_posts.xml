@@ -21,7 +21,7 @@
         android:id="@+id/uploadIcon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/upload1"
+        android:src="@drawable/upload2"
         android:layout_centerInParent="true" />
 
     <TextView

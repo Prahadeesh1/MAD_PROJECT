@@ -72,6 +72,13 @@
         <activity
             android:name=".ReportActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".chat"
+            android:exported="false" />
+        <activity
+            android:name=".userSelectScreen"
+            android:exported="false"/>
     </application>
 
 </manifest>

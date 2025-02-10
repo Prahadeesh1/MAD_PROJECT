@@ -107,7 +107,8 @@
                 android:text="🔍"/>
 
             <!-- Chat Icon -->
-            <ImageView
+            <Button
+                android:id="@+id/chat_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
