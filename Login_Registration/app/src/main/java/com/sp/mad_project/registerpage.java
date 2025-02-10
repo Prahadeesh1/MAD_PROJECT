@@ -84,9 +84,6 @@ public class registerpage extends AppCompatActivity {
                         }
                     });
 
-
-
-            navigateToNextPage();
         }
 
         private boolean isInputInvalid(String username, String email, String password, String confirmPassword) {
@@ -120,11 +117,6 @@ public class registerpage extends AppCompatActivity {
 
         private void showToast(String message) {
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-
-        private void navigateToNextPage() {
-            Intent intent = new Intent(registerpage.this, submittingImage.class);
-            startActivity(intent);
         }
     };
 

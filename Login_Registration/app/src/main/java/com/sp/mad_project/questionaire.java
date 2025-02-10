@@ -150,10 +150,10 @@ public class questionaire extends AppCompatActivity {
         db.collection("users").document(userId)
                 .set(user, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(questionaire.this, "Username Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(questionaire.this, "Personality Saved", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(questionaire.this, "Error saving username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(questionaire.this, "Error saving Personality", Toast.LENGTH_SHORT).show();
                 });
     }
 

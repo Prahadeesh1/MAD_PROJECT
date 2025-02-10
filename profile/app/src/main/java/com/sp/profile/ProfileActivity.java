@@ -28,11 +28,12 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SplittableRandom;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private ImageView profileImage;
-    private TextView username, userBio, postsCount, followersCount, followingCount;
+    private TextView username, userBio, postsCount, followersCount, followingCount, userPersonality;
     private ImageView btnFollowEdit;
     private ImageView settings;
     private RecyclerView recyclerViewPosts, recyclerViewEvents ;
@@ -79,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profile_image);
         username = findViewById(R.id.username);
         userBio = findViewById(R.id.user_bio);
+        userPersonality = findViewById(R.id.user_personality);
         postsCount = findViewById(R.id.posts_count);
         followersCount = findViewById(R.id.followers_count);
         followingCount = findViewById(R.id.following_count);
@@ -90,6 +92,23 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         loadProfileDetails();
+
+        // Setup RecyclerView for posts
+        recyclerViewPosts.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerViewPosts.setHasFixedSize(true);
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(this, postList);
+        recyclerViewPosts.setAdapter(postAdapter);
+
+
+        eventList = new ArrayList<>();
+        eventAdapter = new EventAdapter(this, eventList);
+        recyclerViewEvents.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerViewEvents.setAdapter(eventAdapter);
+
+        loadPosts();
+        loadEvents();
+
 
         host = findViewById(R.id.tabHost);
         host.setup();
@@ -126,33 +145,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         followersCount.setText("5.3K");
         followingCount.setText("320");
-
-        // Setup RecyclerView
-        postList = new ArrayList<>();
-        for(int j = 0; j < 2; j++){
-            for (int i = 0; i < 9; i++) {
-                int randomIndex = i % postArray.length; // Cycles through the images
-                postList.add(new Post(postArray[randomIndex]));   // Add dummy posts
-            }
-        }
-
-        recyclerViewPosts.setLayoutManager(new GridLayoutManager(this, 3));
-        postAdapter = new PostAdapter(this, postList);
-        recyclerViewPosts.setAdapter(postAdapter);
-
-        eventList = new ArrayList<>();
-        for(int j = 0; j < 2; j++){
-            for (int i = 0; i < 6; i++) {
-                int randomIndex = i % eventArray.length; // Cycles through the images
-                eventList.add(new Event(eventArray[randomIndex]));   // Add dummy posts
-            }
-        }
-
-        recyclerViewEvents.setLayoutManager(new GridLayoutManager(this, 2));
-        eventAdapter = new EventAdapter(this, eventList);
-        recyclerViewEvents.setAdapter(eventAdapter);
-
-        postsCount.setText(String.valueOf(postList.size() + eventList.size()));
     }
 
     private void loadProfileDetails(){
@@ -170,15 +162,17 @@ public class ProfileActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         String UserName = document.getString("username");
-                        String profilePictureUrl = document.getString("imageUrl");
                         String Personality = document.getString("personality");
-                        if (profilePictureUrl != null && UserName != null && Personality != null) {
+                        String Bio = document.getString("Bio");
+                        String ProfilePicture = document.getString("profilepictureUrl");
+                        if (UserName != null && Personality != null
+                                && Bio != null && ProfilePicture != null) {
                             // Load the profile picture into an ImageView using Glide or Picasso
-                            Glide.with(ProfileActivity.this)
-                                    .load(profilePictureUrl)
-                                    .into(profileImage); // profileImageView should be your ImageView
+                            Glide.with(ProfileActivity.this).load(ProfilePicture)
+                                    .into(profileImage);
                             username.setText(UserName);
-                            userBio.setText(Personality);
+                            userPersonality.setText(Personality);
+                            userBio.setText(Bio);
                         }
                     } else {
                         Log.d(TAG, "No such document");
@@ -189,4 +183,72 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadPosts() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = user.getUid();
+        Log.d("Firestore", "Fetching posts for user: " + userId);
+
+        db.collection("users").document(userId).collection("posts")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        postList.clear(); // Clear previous data
+                        for (DocumentSnapshot document : task.getResult()) {
+                            Post post = document.toObject(Post.class);
+                            if (post != null) {
+                                postList.add(post);
+                                Log.d("Firestore", "Loaded post: " + post.getImageUrl());
+                            }
+                        }
+                        // Update UI on main thread
+                        runOnUiThread(() -> {
+                            postAdapter.notifyDataSetChanged(); // Refresh RecyclerView
+                            postsCount.setText(String.valueOf(postList.size())); // Update post count
+                        });
+
+                        Log.d("Firestore", "Total posts loaded: " + postList.size());
+                    } else {
+                        Log.e("Firestore", "Error getting posts", task.getException());
+                    }
+                });
+    }
+
+
+
+
+    private void loadEvents() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = user.getUid();
+        db.collection("users").document(userId).collection("events")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e(TAG, "Error fetching events", error);
+                        return;
+                    }
+
+                    if (value != null) {
+                        eventList.clear();
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            Event event = doc.toObject(Event.class);
+                            eventList.add(event);
+                        }
+                        eventAdapter.notifyDataSetChanged();
+                        postsCount.setText(String.valueOf(postList.size() + eventList.size())); // Update count
+                    }
+                });
+    }
+
+
+
 }

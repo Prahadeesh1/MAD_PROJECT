@@ -1,17 +1,21 @@
 package com.sp.profile;
 
 public class Post {
-    private int imageResId; // This stores the image resource ID
+    private String imageUrl;
 
-    public Post(int imageResId) {
-        this.imageResId = imageResId;
+    // ✅ No-argument constructor required by Firebase
+    public Post() {}
+
+    public Post(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
+

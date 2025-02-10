@@ -1,17 +1,17 @@
 package com.sp.profile;
 
 public class Event {
-    private int imageResId; // This stores the image resource ID
+    private String eventImageUrl;
 
-    public Event(int imageResId) {
-        this.imageResId = imageResId;
+    public Event() {
+        // Required empty constructor for Firestore
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public Event(String eventImageUrl) {
+        this.eventImageUrl = eventImageUrl;
     }
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public String getEventImageUrl() {
+        return eventImageUrl;
     }
 }

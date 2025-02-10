@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/questionnaire"
+    android:background="@drawable/upload"
     tools:context=".submittingImage">
 
     <LinearLayout
@@ -15,12 +15,12 @@
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
-            android:layout_height="67dp" />
+            android:layout_height="65dp" />
 
         <ImageView
             android:id="@+id/imgGallery"
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="140dp"
             app:srcCompat="@drawable/baseline_file_upload_24" />
 
         <Button

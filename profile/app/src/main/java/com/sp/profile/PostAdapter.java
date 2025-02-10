@@ -1,16 +1,19 @@
 package com.sp.profile;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
-
     private Context context;
     private List<Post> postList;
 
@@ -29,15 +32,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = postList.get(position);
-        holder.postImage.setImageResource(post.getImageResId());
 
-        // Set click listener to open the full-screen image
-        holder.postImage.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FullScreen.class);
-            intent.putExtra("image_res_id", post.getImageResId());
-            context.startActivity(intent);
-        });
+        Log.d("PostAdapter", "Binding image: " + post.getImageUrl()); // Debugging
+
+        if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
+            Glide.with(context).load(post.getImageUrl()).into(holder.postImage);
+        }
     }
+
 
     @Override
     public int getItemCount() {
@@ -47,7 +49,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView postImage;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             postImage = itemView.findViewById(R.id.post_image);
         }
