@@ -38,7 +38,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         if (post.getImageUrl() != null && !post.getImageUrl().isEmpty()) {
             Glide.with(context).load(post.getImageUrl()).into(holder.postImage);
         }
+
+        holder.postImage.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FullScreen.class);
+            intent.putExtra("image_url", post.getImageUrl()); // Use a proper key
+            context.startActivity(intent);
+        });
     }
+
 
 
     @Override

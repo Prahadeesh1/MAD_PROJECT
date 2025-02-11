@@ -46,25 +46,6 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     String TAG;
-    private int[] postArray = {
-            R.drawable.sample_post,
-            R.drawable.box,
-            R.drawable.cat,
-            R.drawable.die,
-            R.drawable.girl,
-            R.drawable.pear,
-            R.drawable.pixel,
-            R.drawable.skull,
-            R.drawable.spongebob,
-    };
-    private int[] eventArray = {
-            R.drawable.art,
-            R.drawable.party,
-            R.drawable.market,
-            R.drawable.music,
-            R.drawable.open_mic,
-            R.drawable.party,
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +163,12 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadProfileDetails(); // Refresh user details when returning to ProfileActivity
     }
 
     private void loadPosts() {

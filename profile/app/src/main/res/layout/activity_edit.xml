@@ -24,7 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/white"
-        android:hint="Enter username" />
+        android:hint="Enter new username" />
+
+    <EditText
+        android:id="@+id/edit_Bio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/white"
+        android:hint="Enter new Bio" />
+
 
     <Button
         android:id="@+id/btn_save"

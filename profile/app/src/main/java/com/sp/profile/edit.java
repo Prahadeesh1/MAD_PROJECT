@@ -1,8 +1,6 @@
 package com.sp.profile;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,10 +26,9 @@ public class edit extends AppCompatActivity {
 
     private final int GALLERY_REQ_CODE = 1000;
     private Uri imageUri;
-    private EditText editUsername;
+    private EditText editUsername, editBio;
     private ImageView imgGallery;
     private Button btnSave, btnUpload;
-
     private FirebaseStorage storage;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -50,6 +46,7 @@ public class edit extends AppCompatActivity {
 
         imgGallery = findViewById(R.id.imgGallery);
         editUsername = findViewById(R.id.edit_username);
+        editBio = findViewById(R.id.edit_Bio);
         btnUpload = findViewById(R.id.btnUpload);
         btnSave = findViewById(R.id.btn_save);
 
@@ -68,7 +65,7 @@ public class edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (imageUri != null || !editUsername.getText().toString().trim().isEmpty()) {
+                if (imageUri != null || !editUsername.getText().toString().trim().isEmpty() || !editBio.getText().toString().trim().isEmpty()) {
                     updateProfileDetails();
                 } else{
                     Toast.makeText(edit.this, "Please select an image first", Toast.LENGTH_SHORT).show();
@@ -105,7 +102,7 @@ public class edit extends AppCompatActivity {
                     .addOnSuccessListener(taskSnapshot -> {
                         storageRef.getDownloadUrl()
                                 .addOnSuccessListener(uri -> {
-                                    saveImageUrlToFirestore(userId, uri.toString(), editUsername.getText().toString());
+                                    saveImageUrlToFirestore(userId, uri.toString(), editUsername.getText().toString(), editBio.getText().toString());
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(edit.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
@@ -115,24 +112,26 @@ public class edit extends AppCompatActivity {
                         Toast.makeText(edit.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         } else {
-            saveImageUrlToFirestore(userId, null, editUsername.getText().toString());
+            saveImageUrlToFirestore(userId, null, editUsername.getText().toString(), editBio.getText().toString());
         }
     }
 
-    private void saveImageUrlToFirestore(String userId, String imageUrl, String Username) {
+    private void saveImageUrlToFirestore(String userId, String imageUrl, String Username, String Bio) {
         Map<String, Object> user = new HashMap<>();
-        user.put("imageUrl", imageUrl);
+        user.put("profilepictureUrl", imageUrl);
         user.put("username", Username);
+        user.put("Bio", Bio);
+
         db.collection("users").document(userId)
                 .update(user)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(edit.this, "Profile picture updated!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(edit.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(edit.this, ProfileActivity.class);
                     startActivity(intent);
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(edit.this, "Error saving profile picture", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(edit.this, "Error updated profile", Toast.LENGTH_SHORT).show();
                 });
     }
 
