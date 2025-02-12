@@ -1,7 +1,4 @@
-package com.sp.mad_project;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+package com.sp.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,24 +7,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class registerpage extends AppCompatActivity {
-
+public class Register extends AppCompatActivity {
     private EditText username;
     private EditText email;
     private EditText password;
@@ -40,7 +44,7 @@ public class registerpage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registerpage);
+        setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
@@ -70,21 +74,34 @@ public class registerpage extends AppCompatActivity {
             }
 
             mAuth.createUserWithEmailAndPassword(emailInput, passwordInput)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                uploadUsername();
-                                Intent intent = new Intent(registerpage.this, submittingImage.class);
-                                startActivity(intent);
-                                Toast.makeText(registerpage.this, "Account Created",
-                                        Toast.LENGTH_SHORT).show();
+                        public void onSuccess(AuthResult authResult) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(registerpage.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
+                            if (firebaseUser != null) {
+                                // Update user profile (display name)
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(usernameInput)
+                                        .build();
+                                firebaseUser.updateProfile(profileUpdates);
+
+                                // Store user data in Firebase Realtime Database
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
+                                User user = new User(firebaseUser.getUid(), usernameInput, emailInput, passwordInput);
+                                databaseReference.child(firebaseUser.getUid()).setValue(user);
+
+                                // Proceed to next activity
+                                Intent intent = new Intent(Register.this, mainpage.class);
+                                startActivity(intent);
+                                Toast.makeText(Register.this, "Account Created", Toast.LENGTH_SHORT).show();
                             }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Register.this, "Signup Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -138,10 +155,10 @@ public class registerpage extends AppCompatActivity {
         db.collection("users").document(userId)
                 .set(user)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(registerpage.this, "Username Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Username Saved", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(registerpage.this, "Error saving username", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Error saving username", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -151,5 +168,4 @@ public class registerpage extends AppCompatActivity {
         Matcher matcher = emailPat.matcher(input);
         return matcher.find();
     }
-
 }

@@ -13,7 +13,10 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".mainpage"
+            android:name=".Register"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,11 +25,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".mainpage"
+            android:exported="false"></activity>
+        <activity
             android:name=".chat"
             android:exported="false" />
         <activity
             android:name=".userSelectScreen"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

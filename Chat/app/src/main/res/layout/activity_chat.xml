@@ -1,67 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E85D22"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FDAA48"
     android:orientation="vertical">
 
-    <!-- User info section: Avatar and Username -->
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <!-- Avatar Image -->
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:scaleType="centerCrop" />
-
-        <!-- Username Text -->
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Username"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_gravity="center_vertical" />
-
-    </LinearLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="#E85D22"
+        app:titleTextColor="@color/white"/>
 
     <!-- RecyclerView for chat messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/sendmessageLayout"/>
 
     <!-- Message input section -->
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/sendmessageLayout"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:padding="15dp">
 
         <EditText
             android:id="@+id/input_message"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Type a message" />
+            android:hint="Write your Message Here"
+            android:layout_alignParentLeft="true"
+            android:padding="15dp"/>
 
         <Button
             android:id="@+id/send_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="60dp"
             android:text="Send"
-            android:layout_marginStart="8dp" />
-    </LinearLayout>
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
