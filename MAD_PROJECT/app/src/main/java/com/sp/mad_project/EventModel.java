@@ -11,7 +11,7 @@ public class EventModel {
         this.eventImageUrl = eventImageUrl;
     }
 
-    public String getEventImageUrl() {
-        return eventImageUrl;
-    }
+    public String getEventImageUrl() {return eventImageUrl;}
+
+    public void setEventImageUrl(String eventImageUrl){this.eventImageUrl = eventImageUrl;}
 }

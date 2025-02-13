@@ -194,7 +194,7 @@ public class ProfileActivity extends AppCompatActivity {
                         // Update UI on main thread
                         runOnUiThread(() -> {
                             postAdapter.notifyDataSetChanged(); // Refresh RecyclerView
-                            postsCount.setText(String.valueOf(postList.size())); // Update post count
+                            postsCount.setText(String.valueOf(postList.size() + eventList.size())); // Update post count
                         });
 
                         Log.d("Firestore", "Total posts loaded: " + postList.size());
@@ -215,21 +215,27 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         String userId = user.getUid();
-        db.collection("users").document(userId).collection("events")
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.e(TAG, "Error fetching events", error);
-                        return;
-                    }
-
-                    if (value != null) {
-                        eventList.clear();
-                        for (DocumentSnapshot doc : value.getDocuments()) {
-                            EventModel event = doc.toObject(EventModel.class);
-                            eventList.add(event);
+        db.collection("users").document(userId).collection("posts")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        eventList.clear(); // Clear previous data
+                        for (DocumentSnapshot document : task.getResult()) {
+                            EventModel event = document.toObject(EventModel.class);
+                            if (event != null) {
+                                eventList.add(event);
+                                Log.d("Firestore", "Loaded post: " + event.getEventImageUrl());
+                            }
                         }
-                        eventAdapter.notifyDataSetChanged();
-                        postsCount.setText(String.valueOf(postList.size() + eventList.size())); // Update count
+                        // Update UI on main thread
+                        runOnUiThread(() -> {
+                            eventAdapter.notifyDataSetChanged(); // Refresh RecyclerView
+                            postsCount.setText(String.valueOf(postList.size() + eventList.size())); // Update post count
+                        });
+
+                        Log.d("Firestore", "Total posts loaded: " + eventList.size());
+                    } else {
+                        Log.e("Firestore", "Error getting posts", task.getException());
                     }
                 });
     }

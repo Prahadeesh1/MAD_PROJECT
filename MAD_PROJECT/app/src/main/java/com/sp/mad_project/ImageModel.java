@@ -1,14 +1,21 @@
 package com.sp.mad_project;
 
 public class ImageModel {
-    private int imageResId; // Resource ID for local images
+    private String imageUrl;
 
-    public ImageModel(int imageResId) {
-        this.imageResId = imageResId;
+    public ImageModel() {
+        // Empty constructor needed for Firestore deserialization
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public ImageModel(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
-

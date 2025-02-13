@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8A3030">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#8A3030"
+    android:orientation="vertical">
 
     <!-- Search Bar -->
     <LinearLayout
@@ -20,7 +21,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             android:src="@android:drawable/ic_menu_search"
-            android:tint="#FFFFFF" />
+            app:tint="#FFFFFF" />
 
         <EditText
             android:id="@+id/search_input"
@@ -35,11 +36,11 @@
             android:paddingEnd="8dp" />
     </LinearLayout>
 
-    <!-- Main Content -->
-    <FrameLayout
-        android:id="@+id/main_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FF5722"
-        android:layout_below="@id/search_bar" />
-</RelativeLayout>
+        android:background="#FF5722"/>
+
+    <!-- Main Content -->
+</LinearLayout>

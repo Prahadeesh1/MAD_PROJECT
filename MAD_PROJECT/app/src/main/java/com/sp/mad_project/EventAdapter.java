@@ -1,6 +1,8 @@
 package com.sp.mad_project;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EventModel event = eventList.get(position);
-        Glide.with(context).load(event.getEventImageUrl()).into(holder.imageView);
+
+        Log.d("EventAdapt", "Binding image: " + event.getEventImageUrl());
+
+        if(event.getEventImageUrl() != null && !event.getEventImageUrl().isEmpty()){
+            Glide.with(context).load(event.getEventImageUrl()).into(holder.imageView);
+        }
+
+        holder.imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FullScreen.class);
+            intent.putExtra("event_image_url", event.getEventImageUrl()); // Use a proper key
+            context.startActivity(intent);
+        });
     }
 
     @Override

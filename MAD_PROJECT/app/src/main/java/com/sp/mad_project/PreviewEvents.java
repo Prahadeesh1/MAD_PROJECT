@@ -1,6 +1,5 @@
 package com.sp.mad_project;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -8,18 +7,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.widget.Toast;
 
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PreviewActivity extends AppCompatActivity {
+public class PreviewEvents extends AppCompatActivity {
 
     private Uri imageUri;
     private FirebaseAuth auth;
@@ -77,13 +81,13 @@ public class PreviewActivity extends AppCompatActivity {
         post.put("timestamp", System.currentTimeMillis());
 
         db.collection("users").document(userId)
-                .collection("posts").add(post)
+                .collection("events").add(post)
                 .addOnSuccessListener(documentReference -> {
                     // Show success message
                     Toast.makeText(this, "Post uploaded successfully!", Toast.LENGTH_SHORT).show();
 
                     // Intent to go back to MainActivity
-                    Intent intent = new Intent(PreviewActivity.this, MainActivity.class);
+                    Intent intent = new Intent(PreviewEvents.this, Events.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Optional: Clear the current activity from stack
                     startActivity(intent);
                     finish(); // Optional: Finish the current activity to prevent going back to it
