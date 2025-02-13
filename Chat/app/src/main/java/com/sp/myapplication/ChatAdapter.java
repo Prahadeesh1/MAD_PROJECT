@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -52,10 +53,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Message message = messages.get(position);
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+        String formattedTime = sdf.format(new Date(message.getTimestamp()));
         if(message.getSenderId().equals(FirebaseAuth.getInstance().getUid())){
             holder.textViewSentMessage.setText(message.getMessage());
+            holder.timeTextView.setText(formattedTime);
         } else {
             holder.textViewReceivedMessage.setText(message.getMessage());
+            holder.timeTextView.setText(formattedTime);
         }
     }
 
@@ -78,11 +83,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     }
 
     public class ChatViewHolder extends RecyclerView.ViewHolder{
-        private TextView textViewSentMessage, textViewReceivedMessage;
+        private TextView textViewSentMessage, textViewReceivedMessage, timeTextView;
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewSentMessage = itemView.findViewById(R.id.textViewSentMessage);
             textViewReceivedMessage = itemView.findViewById(R.id.textViewReceivedMessage);
+            timeTextView = itemView.findViewById(R.id.text_time);
         }
     }
 }

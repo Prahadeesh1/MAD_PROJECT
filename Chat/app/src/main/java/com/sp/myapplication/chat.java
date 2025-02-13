@@ -71,7 +71,7 @@ public class chat extends AppCompatActivity {
         dbReferenceSender = FirebaseDatabase.getInstance().getReference("chats").child(senderRoom);
         dbReferenceReceiver = FirebaseDatabase.getInstance().getReference("chats").child(receiverRoom);
 
-        dbReferenceSender.addValueEventListener(new ValueEventListener() {
+        dbReferenceSender.orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Message> messages = new ArrayList<>();
@@ -84,6 +84,7 @@ public class chat extends AppCompatActivity {
                     chatAdapter.add(message);
                 }
                 chatAdapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
             }
 
             @Override
