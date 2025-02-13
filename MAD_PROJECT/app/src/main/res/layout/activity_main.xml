@@ -1,0 +1,142 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#8B2F2F">
+
+    <!-- Content area (orange rectangle) -->
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/curved_bottom_nav"
+        android:background="#E85D22">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+
+        <!-- Heart Icon (Like Button) -->
+
+        <ImageButton
+            android:id="@+id/report_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="bottom|start"
+            android:src="@drawable/ic_exclamation"
+            android:contentDescription="Exclamation Icon" />
+
+        <ImageButton
+            android:id="@+id/like_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_heart_border"
+            android:contentDescription="Heart Icon"
+            />
+
+    </FrameLayout>
+
+    <!-- Top Elements -->
+    <!-- Camera Icon -->
+    <ImageButton
+        android:id="@+id/camera_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="Camera Icon"
+        android:src="@drawable/ic_camera"
+        android:background="@drawable/circle_button"
+        android:backgroundTint="#8B2F2F" />
+
+    <!-- For You Button -->
+    <Button
+        android:id="@+id/for_you_button"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/camera_icon"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#780000"
+        android:text="For You"
+        android:textColor="#FFFFFF" />
+
+    <!-- Events Button -->
+    <Button
+        android:id="@+id/events_button"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_toEndOf="@id/for_you_button"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#780000"
+        android:text="Events"
+        android:textColor="#FFFFFF" />
+
+    <!-- Curved Bottom Navigation -->
+    <RelativeLayout
+        android:id="@+id/curved_bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/curved_navigation_background">
+
+        <!-- Circular Buttons Section -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="0dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Home Icon -->
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_home"
+                android:background="@drawable/circle_button"
+                android:contentDescription="Home Icon" />
+
+            <!-- Search Button (Increased size) -->
+            <ImageButton
+                android:id="@+id/search_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_search"
+                android:background="@drawable/circle_button"
+                android:contentDescription="Search Button"
+                android:text="🔍"/>
+
+            <!-- Chat Icon -->
+            <ImageButton
+                android:id="@+id/chat_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_chat"
+                android:background="@drawable/circle_button"
+                android:contentDescription="Chat Icon" />
+
+            <!-- Profile Icon -->
+            <ImageButton
+                android:id="@+id/profile_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/circle_button"
+                android:contentDescription="Profile Icon"
+                android:src="@drawable/ic_person" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
