@@ -8,17 +8,17 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
-    private List<ImageModel> images;
     private Context context;
+    private List<ImageModel> imageList;
 
-    public ImageAdapter(Context context, List<ImageModel> images) {
+    public ImageAdapter(Context context, List<ImageModel> imageList) {
         this.context = context;
-        this.images = images;
+        this.imageList = imageList;
     }
 
     @NonNull
@@ -30,13 +30,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Load image from drawable resource
-        holder.imageView.setImageResource(images.get(position).getImageResId());
+        ImageModel imageModel = imageList.get(position);
+        Glide.with(context).load(imageModel.getImageUrl()).into(holder.imageView); // ✅ Loads image
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return imageList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,7 +44,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.imageView); // ✅ Match with item_image.xml
         }
     }
 }

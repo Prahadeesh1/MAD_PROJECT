@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class welcomepage extends AppCompatActivity {
+public class Welcomepage extends AppCompatActivity {
 
     ImageView welcome;
 
@@ -23,7 +19,7 @@ public class welcomepage extends AppCompatActivity {
         welcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(welcomepage.this, MainActivity.class);
+                Intent intent = new Intent(Welcomepage.this, MainActivity.class);
                 startActivity(intent);
             }
         });

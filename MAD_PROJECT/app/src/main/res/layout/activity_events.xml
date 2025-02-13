@@ -111,6 +111,7 @@
             <!-- Home Icon -->
 
             <ImageButton
+                android:id="@+id/home_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
@@ -141,6 +142,7 @@
 
             <!-- Profile Icon -->
             <ImageButton
+                android:id="@+id/profile_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"

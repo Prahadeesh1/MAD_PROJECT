@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Move to MainActivity after 3.5 seconds
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, loginRegistrationPage.class));
+            startActivity(new Intent(SplashActivity.this, LoginRegistrationPage.class));
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             finish();
         }, 3500);

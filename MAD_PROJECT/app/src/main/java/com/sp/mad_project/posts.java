@@ -3,15 +3,13 @@ package com.sp.mad_project;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.sp.mad_project.PreviewActivity;
 
-public class posts extends AppCompatActivity {
+public class Posts extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
 
@@ -27,7 +25,7 @@ public class posts extends AppCompatActivity {
         uploadIcon.setOnClickListener(v -> openFileChooser());
         doneButton.setOnClickListener(v -> {
             if (imageUri != null) {
-                Intent intent = new Intent(posts.this, PreviewActivity.class);
+                Intent intent = new Intent(Posts.this, PreviewActivity.class);
                 intent.putExtra("imageUri", imageUri.toString());
                 startActivity(intent);
             }

@@ -1,5 +1,6 @@
 package com.sp.mad_project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,25 +10,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Objects;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class registerpage extends AppCompatActivity {
+public class Registerpage extends AppCompatActivity {
 
     private EditText username;
     private EditText email;
     private EditText password;
     private EditText cfm_password;
     private Button register;
-    private String Email;
-    private String Password;
-    private String Cfm_password;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registerpage);
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         username = findViewById(R.id.username);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -53,7 +63,25 @@ public class registerpage extends AppCompatActivity {
                 return;
             }
 
-            navigateToNextPage();
+            mAuth.createUserWithEmailAndPassword(emailInput, passwordInput)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                uploadUsername();
+                                Intent intent = new Intent(Registerpage.this, SubmittingImage.class);
+                                startActivity(intent);
+                                Toast.makeText(Registerpage.this, "Account Created",
+                                        Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Toast.makeText(Registerpage.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
         }
 
         private boolean isInputInvalid(String username, String email, String password, String confirmPassword) {
@@ -88,12 +116,28 @@ public class registerpage extends AppCompatActivity {
         private void showToast(String message) {
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
-
-        private void navigateToNextPage() {
-            Intent intent = new Intent(registerpage.this, submittingImage.class);
-            startActivity(intent);
-        }
     };
+
+    private void uploadUsername() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = currentUser.getUid();
+        String userName = username.getText().toString();
+        Map<String, Object> user = new HashMap<>();
+        user.put("username", userName);
+        db.collection("users").document(userId)
+                .set(user)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(Registerpage.this, "Username Saved", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(Registerpage.this, "Error saving username", Toast.LENGTH_SHORT).show();
+                });
+    }
 
     public static boolean valEmail(String input){
         String emailRegex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";

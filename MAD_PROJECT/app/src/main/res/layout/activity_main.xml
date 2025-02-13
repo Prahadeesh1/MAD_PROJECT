@@ -130,12 +130,13 @@
 
             <!-- Profile Icon -->
             <ImageButton
+                android:id="@+id/profile_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/ic_person"
                 android:background="@drawable/circle_button"
-                android:contentDescription="Profile Icon" />
+                android:contentDescription="Profile Icon"
+                android:src="@drawable/ic_person" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

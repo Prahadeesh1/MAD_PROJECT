@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -16,6 +19,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MAD_Project"
         tools:targetApi="31">
+        <activity
+            android:name=".PEvents"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PreviewEvents"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".Edit"
+            android:exported="false" />
+        <activity
+            android:name=".FullScreen"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileCreation"
+            android:exported="false" />
         <activity
             android:name=".Search"
             android:exported="true">
@@ -35,48 +71,47 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".welcomepage"
+            android:name=".Welcomepage"
             android:exported="false" />
         <activity
-            android:name=".questionaire"
+            android:name=".Questionnaire"
             android:exported="false" />
         <activity
             android:name=".Camera"
             android:exported="false" />
         <activity
-            android:name=".submittingImage"
+            android:name=".SubmittingImage"
             android:exported="false" />
         <activity
-            android:name=".registerpage"
+            android:name=".Registerpage"
             android:exported="false" />
         <activity
-            android:name=".loginpage"
+            android:name=".Loginpage"
             android:exported="false" />
         <activity
-            android:name=".loginRegistrationPage"
-            android:exported="true" />
+            android:name=".LoginRegistrationPage"
+            android:exported="false" />
         <activity
-            android:name=".events"
-            android:exported="true" />
+            android:name=".Events"
+            android:exported="false" />
         <activity
             android:name=".PreviewActivity"
-            android:exported="true" />
-        <activity
-            android:name=".posts"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ReportActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".chat"
             android:exported="false" />
         <activity
-            android:name=".userSelectScreen"
-            android:exported="false"/>
+            android:name=".Posts"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Chat"
+            android:exported="false" />
+        <activity
+            android:name=".UserSelectScreen"
+            android:exported="false" />
     </application>
 
 </manifest>

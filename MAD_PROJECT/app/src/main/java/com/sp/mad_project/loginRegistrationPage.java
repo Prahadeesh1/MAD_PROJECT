@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class loginRegistrationPage extends AppCompatActivity {
+public class LoginRegistrationPage extends AppCompatActivity {
     private Button login;
     private Button register;
 
@@ -26,7 +26,7 @@ public class loginRegistrationPage extends AppCompatActivity {
     private View.OnClickListener onLogin = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(loginRegistrationPage.this, loginpage.class);
+            Intent intent = new Intent(LoginRegistrationPage.this, Loginpage.class);
             startActivity(intent);
         }
     };
@@ -34,7 +34,7 @@ public class loginRegistrationPage extends AppCompatActivity {
     private View.OnClickListener onRegister = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(loginRegistrationPage.this, registerpage.class);
+            Intent intent = new Intent(LoginRegistrationPage.this, Registerpage.class);
             startActivity(intent);
         }
     };

@@ -13,49 +13,47 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
     private List<User> userList;
     private Context context;
-    private OnUserClickListener listener;
 
-    public UserAdapter(Context context, List<User> userList) {
+    public UserAdapter(Context context) {
         this.context = context;
-        this.userList = userList;
+        this.userList = new ArrayList<>();
     }
 
-    public interface OnUserClickListener{
-        void onUserClick(User user);
+    public void add(User user){
+        userList.add(user);
     }
 
-    public UserAdapter(Context context, List<User> userList,OnUserClickListener listener){
-        this.context = context;
-        this.userList = userList;
-        this.listener = listener;
+    public void clear(){
+        userList.clear();
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_username, parent, false);
-        return new UserViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         User user = userList.get(position);
-        holder.userName.setText(user.getName());
-        Glide.with(holder.userAvatar.getContext()).load(user.getAvatarUrl()).into(holder.userAvatar);
+        holder.name.setText(user.getUserName());
 
-        holder.itemView.setOnClickListener(v -> {
-            if(listener != null){
-                listener.onUserClick(user);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, Chat.class);
+                intent.putExtra("id", user.getUserId());
+                intent.putExtra("name", user.getUserName());
+                context.startActivity(intent);
             }
-            Intent intent = new Intent(context, chat.class);
-            intent.putExtra("userName", user.getName());
-            intent.putExtra("userAvatar", user.getAvatarUrl());
-            context.startActivity(intent);
         });
     }
 
@@ -64,14 +62,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return userList.size();
     }
 
-    static class UserViewHolder extends RecyclerView.ViewHolder {
-        TextView userName;
-        ImageView userAvatar;
+    public List<User> getUserModelList(){
+        return userList;
+    }
 
-        public UserViewHolder(@NonNull View itemView) {
+    public class MyViewHolder extends RecyclerView.ViewHolder{
+        private TextView name, email;
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            userName = itemView.findViewById(R.id.user_name);
-            userAvatar = itemView.findViewById(R.id.user_avatar);
+            name = itemView.findViewById(R.id.username);
         }
     }
 }

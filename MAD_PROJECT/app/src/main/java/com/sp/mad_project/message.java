@@ -2,32 +2,53 @@ package com.sp.mad_project;
 
 import java.util.Date;
 
-public class message {
-    private String text;
-    private boolean isSentByUser;
-    private Date timestamp;
-    private String avatarUrl;
+public class Message {
+    private String messageId;
+    private String senderId;
+    private String message;
+    private long timestamp;
 
-        public message(String text, boolean isSentByUser, Date timestamp, String avatarUrl) {
-            this.text = text;
-            this.isSentByUser = isSentByUser;
-            this.timestamp = timestamp;
-            this.avatarUrl = avatarUrl;
-        }
+    public Message(String messageId, String senderId, String message) {
+        this.messageId = messageId;
+        this.senderId = senderId;
+        this.message = message;
+        this.timestamp = new Date().getTime();
 
-        public String getText() {
-            return text;
-        }
-
-        public boolean isSentByUser() {
-            return isSentByUser;
-        }
-
-        public Date getTimestamp() {
-            return timestamp;
-        }
-
-        public String getAvatarUrl() {
-            return avatarUrl;
-        }
     }
+
+    public Message() {
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+}
+
